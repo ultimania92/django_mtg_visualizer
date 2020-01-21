@@ -16,6 +16,9 @@ class AuthorAdmin(admin.ModelAdmin):
 
 admin.site.register(Author, AuthorAdmin)
 
+#class AuthorBooksInline(admin.StackedInline):
+#    model = AuthorInstance
+
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
 
