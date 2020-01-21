@@ -9,18 +9,27 @@ admin.site.register(Genre)
 # admin.site.register(BookInstance)
 admin.site.register(Language)
 
-# Define admin class
-class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('last_name','first_name','date_of_birth','date_of_death')
-    fields = ['first_name','last_name', ('date_of_birth','date_of_death')]
-
-admin.site.register(Author, AuthorAdmin)
-
-#class AuthorBooksInline(admin.StackedInline):
-#    model = AuthorInstance
-
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
+
+class BooksInline(admin.TabularInline):
+    """Defines format of inline book insertion (used in AuthorAdmin)"""
+    model = Book
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    """Administration object for Author models.
+    Defines:
+     - fields to be displayed in list view (list_display)
+     - orders fields in detail view (fields),
+       grouping the date fields horizontally
+     - adds inline addition of books in author view (inlines)
+    """
+    list_display = ('last_name',
+                    'first_name', 'date_of_birth', 'date_of_death')
+    fields = ['first_name', 'last_name', ('date_of_birth', 'date_of_death')]
+    inlines = [BooksInline]
+
 
 # Register the Admin classes for Book using the decorator
 @admin.register(Book)
